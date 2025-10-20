@@ -1,7 +1,11 @@
 import Counter from '@/components/Counter';
+import { useState } from 'react';
 import { Text, View } from 'react-native';
 
 function Index() {
+  const [count, setCount] = useState(0);
+  const fullName = 'Emin Başbayan';
+
   return (
     <View
       style={{
@@ -10,7 +14,7 @@ function Index() {
         alignItems: 'center',
       }}
     >
-      <Counter />
+      <Counter fullName={fullName} count={count} setCount={setCount} />
     </View>
   );
 }

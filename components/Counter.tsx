@@ -1,22 +1,18 @@
 import { useState } from 'react';
 import { Button, Text, View } from 'react-native';
 
-function Counter() {
-  const [state, setState] = useState(0);
-  let count = 0;
+function Counter(props) {
+ 
 
   function arttir() {
-    // count = count + 1;
-    // console.log(count);
-    setState(state + 1);
+    props.setCount(props.count + 1);
   }
 
-  function azalt(){
-    setState(state - 1);
+  function azalt() {
+    props.setCount(props.count - 1);
   }
 
-  console.log("component re-rendered!");
-  
+  console.log(props.fullName);
 
   return (
     <View>
@@ -25,10 +21,11 @@ function Counter() {
           fontSize: 28,
         }}
       >
-        Counter: {state}
+        Counter: {props.count}
       </Text>
       <Button title="Arttır" onPress={arttir} />
       <Button title="Azalt" onPress={azalt} />
+      <Text>{props.fullName}</Text>
     </View>
   );
 }
