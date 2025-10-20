@@ -1,15 +1,7 @@
-import Counter from '@/components/Counter';
-import { useState } from 'react';
-import { Text, View } from 'react-native';
+import { View, Text } from 'react-native';
+import cartsData, { productsData, usersData } from '@/constants/productsData';
 
 function Index() {
-  const [count, setCount] = useState(0);
-  const fullName = 'Emin Başbayan';
-
-  function arttir(deger: number) {
-    setCount(count + deger);
-  }
-
   return (
     <View
       style={{
@@ -18,12 +10,9 @@ function Index() {
         alignItems: 'center',
       }}
     >
-      <Counter
-        fullName={fullName}
-        count={count}
-        setCount={setCount}
-        arttir={arttir}
-      />
+      {usersData.map((user) => {
+        return <Text key={user.id}>{user.name.firstname}</Text>;
+      })}
     </View>
   );
 }
