@@ -1,11 +1,16 @@
+import Counter from '@/components/Counter';
 import { Text, View } from 'react-native';
 
 function Index() {
   return (
-    <View>
-      <Text style={{
-        fontSize: 24
-      }}>Hello World!</Text>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Counter />
     </View>
   );
 }
