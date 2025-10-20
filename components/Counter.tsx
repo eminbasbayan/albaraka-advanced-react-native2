@@ -2,11 +2,6 @@ import { useState } from 'react';
 import { Button, Text, View } from 'react-native';
 
 function Counter(props) {
- 
-
-  function arttir() {
-    props.setCount(props.count + 1);
-  }
 
   function azalt() {
     props.setCount(props.count - 1);
@@ -23,7 +18,7 @@ function Counter(props) {
       >
         Counter: {props.count}
       </Text>
-      <Button title="Arttır" onPress={arttir} />
+      <Button title="Arttır" onPress={()=> props.arttir(2)} />
       <Button title="Azalt" onPress={azalt} />
       <Text>{props.fullName}</Text>
     </View>
