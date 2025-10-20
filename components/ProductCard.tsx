@@ -1,6 +1,6 @@
 import { Image, Text, View } from 'react-native';
 
-function ProductCard() {
+function ProductCard({ item: { title, price, description, image, category } }) {
   return (
     <View
       style={{
@@ -9,15 +9,17 @@ function ProductCard() {
         borderRadius: 8,
         padding: 12,
         backgroundColor: '#fff',
+        marginBottom: 10
       }}
     >
       <Image
         source={{
-          uri: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png',
+          uri: image,
         }}
         style={{
           width: 200,
           height: 200,
+          resizeMode: 'cover',
         }}
       />
       <Text
@@ -27,15 +29,15 @@ function ProductCard() {
           marginTop: 8,
         }}
       >
-        Ürün Adı
+        {title}
       </Text>
       <Text
         style={{
           color: '#666',
-          marginVertical: 6,
+          marginVertical: 4,
         }}
       >
-        Ürün Açıklaması
+        {description}
       </Text>
       <Text
         style={{
@@ -43,7 +45,7 @@ function ProductCard() {
           fontStyle: 'italic',
         }}
       >
-        ₺100
+        ₺{price}
       </Text>
 
       <Text
@@ -52,7 +54,7 @@ function ProductCard() {
           fontStyle: 'italic',
         }}
       >
-        Ürün Kategorisi
+        {category}
       </Text>
     </View>
   );
