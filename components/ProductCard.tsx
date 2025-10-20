@@ -1,6 +1,9 @@
-import { Image, Text, View } from 'react-native';
+import { Button, Image, Text, View } from 'react-native';
 
-function ProductCard({ item: { title, price, description, image, category } }) {
+function ProductCard({
+  item: { id, title, price, description, image, category },
+  deleteProduct,
+}) {
   return (
     <View
       style={{
@@ -9,7 +12,7 @@ function ProductCard({ item: { title, price, description, image, category } }) {
         borderRadius: 8,
         padding: 12,
         backgroundColor: '#fff',
-        marginBottom: 10
+        marginBottom: 10,
       }}
     >
       <Image
@@ -56,6 +59,8 @@ function ProductCard({ item: { title, price, description, image, category } }) {
       >
         {category}
       </Text>
+
+      <Button title="Ürünü Sil" onPress={()=> deleteProduct(id)} />
     </View>
   );
 }
