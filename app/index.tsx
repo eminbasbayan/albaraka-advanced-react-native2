@@ -1,5 +1,6 @@
 import { View, Text } from 'react-native';
 import cartsData, { productsData, usersData } from '@/constants/productsData';
+import ProductCard from '@/components/ProductCard';
 
 function Index() {
   return (
@@ -10,9 +11,7 @@ function Index() {
         alignItems: 'center',
       }}
     >
-      {usersData.map((user) => {
-        return <Text key={user.id}>{user.name.firstname}</Text>;
-      })}
+      <ProductCard />
     </View>
   );
 }
