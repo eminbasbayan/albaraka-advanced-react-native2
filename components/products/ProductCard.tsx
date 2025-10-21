@@ -1,10 +1,12 @@
 import { Image, Text, View } from 'react-native';
 import Button from '@/components/Button';
+import { useContext } from 'react';
+import { CartContext } from '@/context/CartContext';
 
-function ProductCard({
-  item: { id, title, price, description, image, category },
-  deleteProduct,
-}) {
+function ProductCard({ item, deleteProduct, cart }) {
+  const { addToCart, deleteFromCart } = useContext(CartContext);
+  const { id, title, price, description, image, category } = item;
+
   return (
     <View
       style={{
@@ -61,7 +63,12 @@ function ProductCard({
         {category}
       </Text>
 
-      <Button title="Ürünü Sil" onPress={() => deleteProduct(id)} variant="outline" />
+      {!cart && <Button title="Sepete Ekle" onPress={() => addToCart(item)} />}
+      <Button
+        title="Ürünü Sil"
+        onPress={() => (cart ? deleteFromCart(id) : deleteProduct(id))}
+        variant="outline"
+      />
       {/* <Button title="Ürünü Sil" onPress={()=> deleteProduct(id)} /> */}
     </View>
   );
