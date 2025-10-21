@@ -1,12 +1,12 @@
 import { View, Text, FlatList } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
-import { productsData } from '@/constants/productsData';
 import Button from '../Button';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [title, setTitle] = useState('Elma');
 
   function deleteProduct(productId) {
     const filteredProducts = products.filter(
@@ -31,6 +31,10 @@ export default function Products() {
     }
   }
 
+  useEffect(() => {
+    fetchProducts();
+  }, [title]);
+
   return (
     <View>
       <Text>Product Component</Text>
@@ -40,6 +44,9 @@ export default function Products() {
         variant="primary"
         loading={isLoading}
       />
+
+      <Text>{title}</Text>
+      <Button title="Değiştir" onPress={() => setTitle('Armut')} />
 
       {isLoading && <Text>Loading...</Text>}
 
