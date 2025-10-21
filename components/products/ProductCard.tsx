@@ -5,7 +5,7 @@ import { CartContext } from '@/context/CartContext';
 
 function ProductCard({ item, deleteProduct, cart }) {
   const { addToCart, deleteFromCart } = useContext(CartContext);
-  const { id, title, price, description, image, category } = item;
+  const { id, title, price, description, image, category, quantity } = item;
 
   return (
     <View
@@ -53,7 +53,14 @@ function ProductCard({ item, deleteProduct, cart }) {
       >
         ₺{price}
       </Text>
-
+      <Text
+        style={{
+          color: '#999',
+          fontStyle: 'italic',
+        }}
+      >
+        {quantity}
+      </Text>
       <Text
         style={{
           color: '#999',

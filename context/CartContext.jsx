@@ -6,7 +6,21 @@ function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
 
   function addToCart(product) {
-    setCartItems([product, ...cartItems]);
+    const findCartItem = cartItems.find((item) => item.id === product.id);
+
+    if (findCartItem) {
+      const newCartItems = cartItems.map((item) => {
+        if (item.id === findCartItem.id) {
+          return { ...item, quantity: item.quantity + 1 };
+        }
+
+        return item;
+      });
+
+      setCartItems(newCartItems);
+    } else {
+      setCartItems([{ ...product, quantity: 1 }, ...cartItems]);
+    }
   }
 
   function deleteFromCart(cartItemId) {
@@ -21,7 +35,7 @@ function CartProvider({ children }) {
       value={{
         cartItems,
         addToCart,
-        deleteFromCart
+        deleteFromCart,
       }}
     >
       {children}
