@@ -5,7 +5,8 @@ import { productsData } from '@/constants/productsData';
 import Button from '../Button';
 
 export default function Products() {
-  const [products, setProducts] = useState(productsData);
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   function deleteProduct(productId) {
     const filteredProducts = products.filter(
@@ -14,14 +15,34 @@ export default function Products() {
 
     setProducts(filteredProducts);
   }
+
+  async function fetchProducts() {
+    setIsLoading(true);
+    setProducts([]);
+    try {
+      const res = await fetch('https://fakestoreapi.com/products');
+      const data = await res.json();
+
+      setProducts(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <View>
       <Text>Product Component</Text>
-      <Button title="1" onPress={() => {}} variant="primary" />
-      <Button title="2" onPress={() => {}} variant="secondary" />
-      <Button title="3" onPress={() => {}} variant="outline" />
-      <Button title="4" onPress={() => {}} variant="outline" loading />
-      <Button title="5" onPress={() => {}} variant="primary" disabled />
+      <Button
+        title="Ürünleri Getir"
+        onPress={fetchProducts}
+        variant="primary"
+        loading={isLoading}
+      />
+
+      {isLoading && <Text>Loading...</Text>}
+
       <FlatList
         data={products}
         keyExtractor={(item, index) => index.toString()}
