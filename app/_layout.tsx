@@ -1,5 +1,10 @@
 import { Stack } from 'expo-router';
+import CounterProvider from '@/context/CounterContext';
 
 export default function RootLayout() {
-  return <Stack />;
+  return (
+    <CounterProvider>
+      <Stack />
+    </CounterProvider>
+  );
 }
