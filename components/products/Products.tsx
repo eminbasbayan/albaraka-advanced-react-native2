@@ -1,12 +1,14 @@
 import { View, Text, FlatList } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
 import Button from '../Button';
+import { CounterContext } from '@/context/CounterContext';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState('Elma');
+  const { count, handleCount } = useContext(CounterContext);
 
   function deleteProduct(productId) {
     const filteredProducts = products.filter(
@@ -38,6 +40,14 @@ export default function Products() {
   return (
     <View>
       <Text>Product Component</Text>
+      <Text
+        style={{
+          fontSize: 32,
+        }}
+      >
+        {count}
+      </Text>
+      <Button title="Arttır" onPress={handleCount} />
       <Button
         title="Ürünleri Getir"
         onPress={fetchProducts}
