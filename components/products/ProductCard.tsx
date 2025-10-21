@@ -1,4 +1,5 @@
-import { Button, Image, Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
+import Button from '@/components/Button';
 
 function ProductCard({
   item: { id, title, price, description, image, category },
@@ -60,7 +61,8 @@ function ProductCard({
         {category}
       </Text>
 
-      <Button title="Ürünü Sil" onPress={()=> deleteProduct(id)} />
+      <Button title="Ürünü Sil" onPress={() => deleteProduct(id)} variant="outline" />
+      {/* <Button title="Ürünü Sil" onPress={()=> deleteProduct(id)} /> */}
     </View>
   );
 }

@@ -1,3 +1,4 @@
+import Button from '@/components/Button';
 import Products from '@/components/products/Products';
 import { View } from 'react-native';
 
@@ -11,6 +12,7 @@ function Index() {
       }}
     >
       <Products />
+     
     </View>
   );
 }
