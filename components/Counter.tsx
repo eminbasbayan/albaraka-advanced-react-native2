@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import { Button, Text, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Counter() {
   const count = useSelector((state) => state.counter.count);
+  const dispatch = useDispatch();
 
   return (
     <View>
@@ -14,8 +14,8 @@ function Counter() {
       >
         Counter: {count}
       </Text>
-      <Button title="Arttır" onPress={() => {}} />
-      <Button title="Azalt" onPress={() => {}} />
+      <Button title="Arttır" onPress={() => dispatch({ type: 'ARTTIR' })} />
+      <Button title="Azalt" onPress={() => dispatch({ type: 'AZALT' })} />
     </View>
   );
 }
