@@ -81,7 +81,6 @@ function HomeScreen() {
       {/* Header */}
       <View style={styles.header}>
         <View>
-          <CounterRTK />
           <Text style={styles.greeting}>Merhaba!</Text>
           <Text style={styles.headerTitle}>Alışverişe Başla</Text>
         </View>

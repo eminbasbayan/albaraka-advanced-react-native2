@@ -68,7 +68,7 @@ const CartItemCard = ({ item }) => {
 };
 
 const CartScreen = () => {
-  const { cartItems } = useContext(CartContext);
+  const { cartItems, clearCart } = useContext(CartContext);
   const toplamDeger = cartItems?.reduce((toplam, urun) => {
     return toplam + urun.price * urun.quantity;
   }, 0);
@@ -93,9 +93,7 @@ const CartScreen = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Sepetim</Text>
-        <Text style={styles.headerSubtitle}>
-          {toplamUrunSayisi} ürün
-        </Text>
+        <Text style={styles.headerSubtitle}>{toplamUrunSayisi} ürün</Text>
       </View>
 
       <ScrollView
@@ -126,6 +124,12 @@ const CartScreen = () => {
         </View>
 
         <Button title="Siparişi Tamamla" onPress={() => {}} fullWitdh />
+        <Button
+          title="Sepeti Temizle"
+          variant="secondary"
+          onPress={clearCart}
+          fullWitdh
+        />
       </View>
     </View>
   );
