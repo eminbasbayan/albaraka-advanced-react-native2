@@ -11,6 +11,7 @@ import {
 import React, { useContext, useEffect, useState } from 'react';
 import { CartContext } from '@/context/CartContext';
 import Button from '@/components/Button';
+import { useSelector } from 'react-redux';
 
 const ProductCard = ({ item }) => {
   const { addToCart } = useContext(CartContext);
@@ -58,7 +59,7 @@ const ProductsScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const { cartItems } = useContext(CartContext);
+  const { cartItems } = useSelector((state) => state.cart);
 
   const categories = [
     { id: 'all', label: 'Tümü' },

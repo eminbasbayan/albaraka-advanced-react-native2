@@ -9,9 +9,13 @@ import {
 import React, { useContext } from 'react';
 import { CartContext } from '@/context/CartContext';
 import Button from '@/components/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, clearCart, removeFromCart } from '@/rtk/cartSlice';
 
 const CartItemCard = ({ item }) => {
-  const { deleteFromCart, addToCart } = useContext(CartContext);
+  // const { deleteFromCart, addToCart } = useContext(CartContext);
+  const dispatch = useDispatch();
+
   const { id, title, price, image, quantity } = item;
   const itemTotal = price * quantity;
 
@@ -33,9 +37,9 @@ const CartItemCard = ({ item }) => {
             style={styles.quantityButton}
             onPress={() => {
               if (quantity === 1) {
-                deleteFromCart(id);
+                dispatch(removeFromCart(id));
               } else {
-                addToCart({ ...item, quantity: -1 });
+                dispatch(addToCart({ ...item, quantity: -1 }));
               }
             }}
           >
@@ -48,7 +52,7 @@ const CartItemCard = ({ item }) => {
 
           <TouchableOpacity
             style={styles.quantityButton}
-            onPress={() => addToCart({ ...item, quantity: 1 })}
+            onPress={() => dispatch(addToCart({ ...item, quantity: 1 }))}
           >
             <Text style={styles.quantityButtonText}>+</Text>
           </TouchableOpacity>
@@ -59,7 +63,7 @@ const CartItemCard = ({ item }) => {
 
       <TouchableOpacity
         style={styles.deleteButton}
-        onPress={() => deleteFromCart(id)}
+        onPress={() => dispatch(removeFromCart(id))}
       >
         <Text style={styles.deleteButtonText}>✕</Text>
       </TouchableOpacity>
@@ -68,7 +72,8 @@ const CartItemCard = ({ item }) => {
 };
 
 const CartScreen = () => {
-  const { cartItems, clearCart } = useContext(CartContext);
+  const { cartItems } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
   const toplamDeger = cartItems?.reduce((toplam, urun) => {
     return toplam + urun.price * urun.quantity;
   }, 0);
@@ -127,7 +132,7 @@ const CartScreen = () => {
         <Button
           title="Sepeti Temizle"
           variant="secondary"
-          onPress={clearCart}
+          onPress={() => dispatch(clearCart())}
           fullWitdh
         />
       </View>

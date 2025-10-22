@@ -1,3 +1,4 @@
+import { useContext, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,13 +8,11 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { useContext, useEffect, useState } from 'react';
-import { CartContext } from '@/context/CartContext';
-import { CounterContext } from '@/context/CounterContext';
-import Button from '@/components/Button';
-import CounterModal from '@/components/CounterModal';
 import { useRouter } from 'expo-router';
-import CounterRTK from '@/components/CounterRTK';
+import { CounterContext } from '@/context/CounterContext';
+import { useDispatch, useSelector } from 'react-redux';
+import CounterModal from '@/components/CounterModal';
+import { addToCart } from '@/rtk/cartSlice';
 
 const FeaturedProductCard = ({ item, onAddToCart }) => {
   const { title, price, image, category } = item;
@@ -50,7 +49,8 @@ function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { cartItems, addToCart } = useContext(CartContext);
+  const { cartItems } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
   const { count, handleCount } = useContext(CounterContext);
   const router = useRouter();
 
@@ -154,7 +154,9 @@ function HomeScreen() {
               <FeaturedProductCard
                 key={product.id}
                 item={product}
-                onAddToCart={addToCart}
+                onAddToCart={() =>
+                  dispatch(addToCart({ ...product, quantity: 1 }))
+                }
               />
             ))}
           </View>
