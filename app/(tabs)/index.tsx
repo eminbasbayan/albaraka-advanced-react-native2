@@ -13,6 +13,7 @@ import { CounterContext } from '@/context/CounterContext';
 import { useDispatch, useSelector } from 'react-redux';
 import CounterModal from '@/components/CounterModal';
 import { addToCart } from '@/rtk/cartSlice';
+import { fetchProducts } from '@/rtk/productSlice';
 
 const FeaturedProductCard = ({ item, onAddToCart }) => {
   const { title, price, image, category } = item;
@@ -47,9 +48,14 @@ const FeaturedProductCard = ({ item, onAddToCart }) => {
 
 function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [featuredProducts, setFeaturedProducts] = useState([]);
+  // const [isLoading, setIsLoading] = useState(true);
   const { cartItems } = useSelector((state) => state.cart);
+  const {
+    products: featuredProducts,
+    loading: isLoading,
+    error,
+  } = useSelector((state) => state.product);
   const dispatch = useDispatch();
   const { count, handleCount } = useContext(CounterContext);
   const router = useRouter();
@@ -59,22 +65,27 @@ function HomeScreen() {
     0
   );
 
-  async function fetchFeaturedProducts() {
-    setIsLoading(true);
-    try {
-      const res = await fetch('https://fakestoreapi.com/products?limit=4');
-      const data = await res.json();
-      setFeaturedProducts(data);
-    } catch (error) {
-      console.log('Öne çıkan ürünler yüklenirken hata:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  console.log(featuredProducts);
+
+  // async function fetchFeaturedProducts() {
+  //   setIsLoading(true);
+  //   try {
+  //     const res = await fetch('https://fakestoreapi.com/products?limit=4');
+  //     const data = await res.json();
+  //     setFeaturedProducts(data);
+  //   } catch (error) {
+  //     console.log('Öne çıkan ürünler yüklenirken hata:', error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // }
 
   useEffect(() => {
-    fetchFeaturedProducts();
-  }, []);
+    // fetchFeaturedProducts();
+    if (isLoading === 'idle') {
+      dispatch(fetchProducts());
+    }
+  }, [isLoading]);
 
   return (
     <View style={styles.container}>
@@ -144,7 +155,7 @@ function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {isLoading ? (
+        {isLoading === 'pending' ? (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#2f95dc" />
           </View>
