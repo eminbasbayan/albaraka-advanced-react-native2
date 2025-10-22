@@ -11,7 +11,8 @@ import {
 import React, { useContext, useEffect, useState } from 'react';
 import { CartContext } from '@/context/CartContext';
 import Button from '@/components/Button';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts, setSelectedCategory } from '@/rtk/productSlice';
 
 const ProductCard = ({ item }) => {
   const { addToCart } = useContext(CartContext);
@@ -55,47 +56,49 @@ const ProductCard = ({ item }) => {
 };
 
 const ProductsScreen = () => {
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { products, loading: isLoading, categories, selectedCategory } = useSelector(
+    (state) => state.product
+  );
+  const dispatch = useDispatch();
+  // const [products, setProducts] = useState([]);
+  // const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  // const [selectedCategory, setSelectedCategory] = useState('all');
   const { cartItems } = useSelector((state) => state.cart);
 
-  const categories = [
-    { id: 'all', label: 'Tümü' },
-    { id: 'electronics', label: 'Elektronik' },
-    { id: 'jewelery', label: 'Takı' },
-    { id: "men's clothing", label: 'Erkek Giyim' },
-    { id: "women's clothing", label: 'Kadın Giyim' },
-  ];
+  // async function fetchProducts() {
+  //   setIsLoading(true);
+  //   try {
+  //     const url =
+  //       selectedCategory === 'all'
+  //         ? 'https://fakestoreapi.com/products'
+  //         : `https://fakestoreapi.com/products/category/${selectedCategory}`;
 
-  async function fetchProducts() {
-    setIsLoading(true);
-    try {
-      const url =
-        selectedCategory === 'all'
-          ? 'https://fakestoreapi.com/products'
-          : `https://fakestoreapi.com/products/category/${selectedCategory}`;
+  //     const res = await fetch(url);
+  //     const data = await res.json();
+  //     setProducts(data);
+  //   } catch (error) {
+  //     console.log('Ürünler yüklenirken hata oluştu:', error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // }
 
-      const res = await fetch(url);
-      const data = await res.json();
-      setProducts(data);
-    } catch (error) {
-      console.log('Ürünler yüklenirken hata oluştu:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  // const onRefresh = async () => {
+  //   setRefreshing(true);
+  //   await fetchProducts();
+  //   setRefreshing(false);
+  // };
 
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await fetchProducts();
-    setRefreshing(false);
-  };
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, [selectedCategory]);
 
   useEffect(() => {
-    fetchProducts();
-  }, [selectedCategory]);
+    if (isLoading === 'idle') {
+      dispatch(fetchProducts());
+    }
+  }, [isLoading]);
 
   const cartItemCount = cartItems?.reduce(
     (total, item) => total + item.quantity,
@@ -133,7 +136,7 @@ const ProductsScreen = () => {
                 styles.categoryChip,
                 selectedCategory === item.id && styles.categoryChipActive,
               ]}
-              onPress={() => setSelectedCategory(item.id)}
+              onPress={() => dispatch(setSelectedCategory(item.id))}
               activeOpacity={0.7}
             >
               <Text
@@ -150,7 +153,7 @@ const ProductsScreen = () => {
       </View>
 
       {/* Products List */}
-      {isLoading && !refreshing ? (
+      {isLoading === "pending" && !refreshing ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#2f95dc" />
           <Text style={styles.loadingText}>Ürünler yükleniyor...</Text>
@@ -173,7 +176,7 @@ const ProductsScreen = () => {
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
-              onRefresh={onRefresh}
+              // onRefresh={onRefresh}
               colors={['#2f95dc']}
               tintColor="#2f95dc"
             />
