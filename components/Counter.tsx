@@ -1,13 +1,9 @@
 import { useState } from 'react';
 import { Button, Text, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
-function Counter(props) {
-
-  function azalt() {
-    props.setCount(props.count - 1);
-  }
-
-  console.log(props.fullName);
+function Counter() {
+  const count = useSelector((state) => state.counter.count);
 
   return (
     <View>
@@ -16,11 +12,10 @@ function Counter(props) {
           fontSize: 28,
         }}
       >
-        Counter: {props.count}
+        Counter: {count}
       </Text>
-      <Button title="Arttır" onPress={()=> props.arttir(2)} />
-      <Button title="Azalt" onPress={azalt} />
-      <Text>{props.fullName}</Text>
+      <Button title="Arttır" onPress={() => {}} />
+      <Button title="Azalt" onPress={() => {}} />
     </View>
   );
 }

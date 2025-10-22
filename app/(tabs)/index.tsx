@@ -13,6 +13,7 @@ import { CounterContext } from '@/context/CounterContext';
 import Button from '@/components/Button';
 import CounterModal from '@/components/CounterModal';
 import { useRouter } from 'expo-router';
+import Counter from '@/components/Counter';
 
 const FeaturedProductCard = ({ item, onAddToCart }) => {
   const { title, price, image, category } = item;
@@ -80,6 +81,7 @@ function HomeScreen() {
       {/* Header */}
       <View style={styles.header}>
         <View>
+          <Counter />
           <Text style={styles.greeting}>Merhaba!</Text>
           <Text style={styles.headerTitle}>Alışverişe Başla</Text>
         </View>
