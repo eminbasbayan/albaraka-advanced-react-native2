@@ -65,8 +65,6 @@ function HomeScreen() {
     0
   );
 
-  console.log(featuredProducts);
-
   // async function fetchFeaturedProducts() {
   //   setIsLoading(true);
   //   try {

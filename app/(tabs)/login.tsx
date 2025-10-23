@@ -11,19 +11,42 @@ import {
 } from 'react-native';
 import Button from '@/components/Button';
 import { useRouter } from 'expo-router';
+import { useForm, Controller } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+const loginSchema = yup.object({
+  email: yup
+    .string()
+    .required('E-posta adresi zorunlu!')
+    .email('Geçerli bir e-posta adresi giriniz!'),
+  password: yup
+    .string()
+    .required('Şifre gerekli!')
+    .min(6, 'Şifre en az 6 karakter olmalıdır!')
+    .max(15, 'Şife en az 15 karakter olmalıdır!'),
+});
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
-  const handleLogin = () => {
-    // Login logic will be added later
-    console.log('Login pressed', { email, password });
-    // After successful login, navigate to profile
-    // router.push('/profile');
+  const onSubmit = (data) => {
+    console.log('Kullanıcı bilgileri:', data);
   };
+  console.log(errors.email);
+  console.log(errors.password);
 
   return (
     <KeyboardAvoidingView
@@ -44,31 +67,63 @@ const LoginScreen = () => {
         <View style={styles.form}>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>E-posta</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="ornek@email.com"
-              placeholderTextColor="#999"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoCorrect={false}
+            <Controller
+              control={control}
+              name="email"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  placeholder="ornek@email.com"
+                  placeholderTextColor="#999"
+                  value={value}
+                  onChangeText={onChange}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+              )}
             />
+            {errors.email && (
+              <Text
+                style={{
+                  color: 'red',
+                }}
+              >
+                {errors.email.message}{' '}
+              </Text>
+            )}
           </View>
 
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Şifre</Text>
             <View style={styles.passwordContainer}>
-              <TextInput
-                style={[styles.input, styles.passwordInput]}
-                placeholder="••••••••"
-                placeholderTextColor="#999"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={!showPassword}
-                autoCapitalize="none"
-                autoCorrect={false}
+              <Controller
+                name="password"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    style={[styles.input, styles.passwordInput]}
+                    placeholder="••••••••"
+                    placeholderTextColor="#999"
+                    value={value}
+                    onChangeText={onChange}
+                    secureTextEntry={!showPassword}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                  />
+                )}
               />
+
+              {errors.password && (
+                <Text
+                  style={{
+                    color: 'red',
+                  }}
+                >
+                  {errors.password.message}{' '}
+                </Text>
+              )}
+
               <TouchableOpacity
                 style={styles.eyeButton}
                 onPress={() => setShowPassword(!showPassword)}
@@ -84,7 +139,7 @@ const LoginScreen = () => {
 
           <Button
             title="Giriş Yap"
-            onPress={handleLogin}
+            onPress={handleSubmit(onSubmit)}
             fullWitdh
             variant="primary"
           />
