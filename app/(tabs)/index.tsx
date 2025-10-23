@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -16,6 +16,8 @@ import { addToCart, loadCart } from '@/rtk/cartSlice';
 import { fetchProducts } from '@/rtk/productSlice';
 import { loadAuthData } from '@/rtk/authSlice';
 import Counter from '@/components/Counter';
+import MyElement from '@/components/MyElement';
+import MyButton from '@/components/MyButton';
 
 const FeaturedProductCard = ({ item, onAddToCart }) => {
   const { title, price, image, category } = item;
@@ -49,6 +51,21 @@ const FeaturedProductCard = ({ item, onAddToCart }) => {
 };
 
 function HomeScreen() {
+  const [toggleParagraph, setToggleParagraph] = useState(false);
+
+  const handleToggleParagraph = useCallback(() => {
+    setToggleParagraph((prevState)=> !prevState);
+  }, [])
+
+  return (
+    <View>
+      <MyElement show={toggleParagraph} />
+      <MyButton onPress={handleToggleParagraph} />
+    </View>
+  );
+}
+
+function HomeScreen2() {
   const [modalVisible, setModalVisible] = useState(false);
   // const [featuredProducts, setFeaturedProducts] = useState([]);
   // const [isLoading, setIsLoading] = useState(true);
