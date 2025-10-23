@@ -41,6 +41,38 @@ export default function TabLayout() {
           },
         }}
       />
+
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profil',
+          tabBarIcon: ({ color, size }) => {
+            return <Ionicons name="person-outline" size={size} color={color} />;
+          },
+        }}
+      />
+
+      <Tabs.Screen
+        name="login"
+        options={{
+          title: 'Giriş',
+          tabBarIcon: ({ color, size }) => {
+            return <Ionicons name="log-in-outline" size={size} color={color} />;
+          },
+          href: null, // Hide from tab bar
+        }}
+      />
+
+      <Tabs.Screen
+        name="register"
+        options={{
+          title: 'Kayıt Ol',
+          tabBarIcon: ({ color, size }) => {
+            return <Ionicons name="person-add-outline" size={size} color={color} />;
+          },
+          href: null, // Hide from tab bar
+        }}
+      />
     </Tabs>
   );
 }
