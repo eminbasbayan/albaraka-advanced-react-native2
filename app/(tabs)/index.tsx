@@ -12,7 +12,7 @@ import { useRouter } from 'expo-router';
 import { CounterContext } from '@/context/CounterContext';
 import { useDispatch, useSelector } from 'react-redux';
 import CounterModal from '@/components/CounterModal';
-import { addToCart } from '@/rtk/cartSlice';
+import { addToCart, loadCart } from '@/rtk/cartSlice';
 import { fetchProducts } from '@/rtk/productSlice';
 
 const FeaturedProductCard = ({ item, onAddToCart }) => {
@@ -86,6 +86,10 @@ function HomeScreen() {
       dispatch(fetchProducts());
     }
   }, [isLoading]);
+
+  useEffect(() => {
+    dispatch(loadCart());
+  }, []);
 
   return (
     <View style={styles.container}>

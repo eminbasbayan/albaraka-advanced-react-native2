@@ -6,11 +6,16 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { CartContext } from '@/context/CartContext';
 import Button from '@/components/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, clearCart, removeFromCart } from '@/rtk/cartSlice';
+import {
+  addToCart,
+  clearCart,
+  loadCart,
+  removeFromCart,
+} from '@/rtk/cartSlice';
 
 const CartItemCard = ({ item }) => {
   // const { deleteFromCart, addToCart } = useContext(CartContext);
@@ -74,6 +79,7 @@ const CartItemCard = ({ item }) => {
 const CartScreen = () => {
   const { cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+
   const toplamDeger = cartItems?.reduce((toplam, urun) => {
     return toplam + urun.price * urun.quantity;
   }, 0);
