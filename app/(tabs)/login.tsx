@@ -15,7 +15,8 @@ import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '@/rtk/authSlice';
+import { loginUser, clearError } from '@/rtk/authSlice';
+import { useEffect } from 'react';
 
 const loginSchema = yup.object({
   username: yup.string().required('Username zorunlu!'),
@@ -40,24 +41,27 @@ const LoginScreen = () => {
       password: '83r5^_',
     },
   });
- const data =  useSelector((state)=> state.auth);
- const dispatch = useDispatch()
 
- console.log(data);
- 
+  const { loading, error, isAuthenticated } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  // Login başarılı olduğunda profile sayfasına yönlendir
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/profile');
+    }
+  }, [isAuthenticated]);
+
+  // Hata mesajını temizle component unmount olduğunda
+  useEffect(() => {
+    return () => {
+      dispatch(clearError());
+    };
+  }, []);
 
   const onSubmit = (data) => {
     console.log('Kullanıcı bilgileri:', data);
-    fetch('https://fakestoreapi.com/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((res) => res.json())
-      .then((user) => dispatch(login(user)));
+    dispatch(loginUser(data));
   };
 
   return (
@@ -149,11 +153,19 @@ const LoginScreen = () => {
             <Text style={styles.forgotPasswordText}>Şifremi Unuttum</Text>
           </TouchableOpacity>
 
+          {error && (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>❌ {error}</Text>
+            </View>
+          )}
+
           <Button
             title="Giriş Yap"
             onPress={handleSubmit(onSubmit)}
             fullWitdh
             variant="primary"
+            loading={loading}
+            disabled={loading}
           />
 
           <View style={styles.divider}>
@@ -266,6 +278,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#2f95dc',
     fontWeight: '600',
+  },
+  errorContainer: {
+    backgroundColor: '#fee',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+  },
+  errorText: {
+    color: '#c00',
+    fontSize: 14,
+    textAlign: 'center',
   },
   divider: {
     flexDirection: 'row',

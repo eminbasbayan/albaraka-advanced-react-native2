@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,20 +9,30 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import Button from '@/components/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadAuthData, logoutUser } from '@/rtk/authSlice';
 
 const ProfileScreen = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const { isAuthenticated, user, loading } = useSelector((state) => state.auth);
 
-  // Set to false to show login prompt, true to show profile
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // Component mount olduğunda auth data'yı yükle
+  useEffect(() => {
+    dispatch(loadAuthData());
+  }, []);
 
-  // Mock user data - will be replaced with real data later
+  // Mock user data - username'den gerçek kullanıcı adını kullan
   const userData = {
-    name: 'Ahmet Yılmaz',
-    email: 'ahmet.yilmaz@example.com',
+    name: user || 'Ahmet Yılmaz',
+    email: user ? `${user}@example.com` : 'ahmet.yilmaz@example.com',
     phone: '+90 555 123 45 67',
     avatar: 'https://i.pravatar.cc/150?img=12',
     memberSince: 'Ocak 2024',
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
   };
 
   const menuItems = [
@@ -85,7 +95,7 @@ const ProfileScreen = () => {
   ];
 
   // Show login prompt if not logged in
-  if (!isLoggedIn) {
+  if (!isAuthenticated) {
     return (
       <View style={styles.container}>
         <View style={styles.loginPromptContainer}>
@@ -219,7 +229,7 @@ const ProfileScreen = () => {
 
       <TouchableOpacity
         style={styles.logoutButton}
-        onPress={() => console.log('Logout pressed')}
+        onPress={handleLogout}
       >
         <Text style={styles.logoutText}>Çıkış Yap</Text>
       </TouchableOpacity>

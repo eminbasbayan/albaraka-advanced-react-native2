@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import CounterModal from '@/components/CounterModal';
 import { addToCart, loadCart } from '@/rtk/cartSlice';
 import { fetchProducts } from '@/rtk/productSlice';
+import { loadAuthData } from '@/rtk/authSlice';
 import Counter from '@/components/Counter';
 
 const FeaturedProductCard = ({ item, onAddToCart }) => {
@@ -57,6 +58,7 @@ function HomeScreen() {
     loading: isLoading,
     error,
   } = useSelector((state) => state.product);
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { count, handleCount } = useContext(CounterContext);
   const router = useRouter();
@@ -88,6 +90,7 @@ function HomeScreen() {
 
   useEffect(() => {
     dispatch(loadCart());
+    dispatch(loadAuthData());
   }, []);
 
   return (
@@ -95,7 +98,9 @@ function HomeScreen() {
       {/* Header */}
       <View style={styles.header}>
         <View>
-          <Text style={styles.greeting}>Merhaba!</Text>
+          <Text style={styles.greeting}>
+            Merhaba{isAuthenticated && user ? `, ${user}` : ''}!
+          </Text>
           <Text style={styles.headerTitle}>Alışverişe Başla</Text>
         </View>
         {cartItemCount > 0 && (
