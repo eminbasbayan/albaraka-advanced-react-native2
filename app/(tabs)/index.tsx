@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import CounterModal from '@/components/CounterModal';
 import { addToCart, loadCart } from '@/rtk/cartSlice';
 import { fetchProducts } from '@/rtk/productSlice';
+import Counter from '@/components/Counter';
 
 const FeaturedProductCard = ({ item, onAddToCart }) => {
   const { title, price, image, category } = item;
@@ -103,6 +104,8 @@ function HomeScreen() {
           </View>
         )}
       </View>
+
+      <Counter />
 
       <ScrollView
         style={styles.scrollView}
