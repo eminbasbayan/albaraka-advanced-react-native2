@@ -1,23 +1,22 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { CounterContext } from '@/context/CounterContext';
-import { useDispatch, useSelector } from 'react-redux';
+import Counter from '@/components/Counter';
 import CounterModal from '@/components/CounterModal';
+import MemoExample from '@/components/MemoExample';
+import { CounterContext } from '@/context/CounterContext';
+import { loadAuthData } from '@/rtk/authSlice';
 import { addToCart, loadCart } from '@/rtk/cartSlice';
 import { fetchProducts } from '@/rtk/productSlice';
-import { loadAuthData } from '@/rtk/authSlice';
-import Counter from '@/components/Counter';
-import MyElement from '@/components/MyElement';
-import MyButton from '@/components/MyButton';
+import { useRouter } from 'expo-router';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 const FeaturedProductCard = ({ item, onAddToCart }) => {
   const { title, price, image, category } = item;
@@ -54,13 +53,12 @@ function HomeScreen() {
   const [toggleParagraph, setToggleParagraph] = useState(false);
 
   const handleToggleParagraph = useCallback(() => {
-    setToggleParagraph((prevState)=> !prevState);
-  }, [])
+    setToggleParagraph((prevState) => !prevState);
+  }, []);
 
   return (
     <View>
-      <MyElement show={toggleParagraph} />
-      <MyButton onPress={handleToggleParagraph} />
+      <MemoExample />
     </View>
   );
 }
