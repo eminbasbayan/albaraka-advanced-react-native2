@@ -14,12 +14,11 @@ import { useRouter } from 'expo-router';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '@/rtk/authSlice';
 
 const loginSchema = yup.object({
-  email: yup
-    .string()
-    .required('E-posta adresi zorunlu!')
-    .email('Geçerli bir e-posta adresi giriniz!'),
+  username: yup.string().required('Username zorunlu!'),
   password: yup
     .string()
     .required('Şifre gerekli!')
@@ -37,16 +36,29 @@ const LoginScreen = () => {
   } = useForm({
     resolver: yupResolver(loginSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      username: 'mor_2314',
+      password: '83r5^_',
     },
   });
+ const data =  useSelector((state)=> state.auth);
+ const dispatch = useDispatch()
+
+ console.log(data);
+ 
 
   const onSubmit = (data) => {
     console.log('Kullanıcı bilgileri:', data);
+    fetch('https://fakestoreapi.com/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((user) => dispatch(login(user)));
   };
-  console.log(errors.email);
-  console.log(errors.password);
 
   return (
     <KeyboardAvoidingView
@@ -69,7 +81,7 @@ const LoginScreen = () => {
             <Text style={styles.label}>E-posta</Text>
             <Controller
               control={control}
-              name="email"
+              name="username"
               render={({ field: { onChange, value } }) => (
                 <TextInput
                   style={styles.input}
@@ -83,13 +95,13 @@ const LoginScreen = () => {
                 />
               )}
             />
-            {errors.email && (
+            {errors.username && (
               <Text
                 style={{
                   color: 'red',
                 }}
               >
-                {errors.email.message}{' '}
+                {errors.username.message}{' '}
               </Text>
             )}
           </View>
